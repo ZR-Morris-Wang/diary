@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My diary</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="index.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"
+      integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+
+  <body>
+    <h1 class="title">My Diary</h1>
+    <div id="filter-base">
+      <div class="filter-text">
+        <p>&nbspFilters:</p>
+      </div>
+      <div class="tag-filter-container" id="academic-work-filter">
+        <p class="filter1">學業</p>
+      </div>
+      <div class="tag-filter-container" id="friendship-filter">
+        <p class="filter1">人際</p>
+      </div>
+      <div class="tag-filter-container" id="club-filter">
+        <p class="filter1">社團</p>
+      </div>
+      <div class="mood-filter-container" id="happy-filter">
+        <p class="filter2">快樂</p>
+      </div>
+      <div class="mood-filter-container" id="angry-filter">
+        <p class="filter2">生氣</p>
+      </div>
+      <div class="mood-filter-container" id="sad-filter">
+        <p class="filter2">難過</p>
+      </div>
+      <div class="all-filter-container" id="all-filter">
+        <p class="filter3">全部</p>
+      </div>
+    </div>
+    <button id="create-new-diary-btn" class="create-diary">New Diary</button>
+
+    <div id="trello-base" class="trello-base">
+      <section id="trello-rows"></section>
+
+      <!-- templates for the middle and the right container has to be separated from that of row containers-->
+      <!-- template for row containers will include the creation of the left trello container,
+      that is, the left container will be created with the row-->
+
+      <!-- trello-container-row# template -->
+      <template id="trello-container-rows">
+        <div id="trello-container-row" class="trello-container-row">
+          <div
+            id="row-trello-container-left"
+            class="trello-container-left"
+            data-row=""
+            data-column="0"
+          >
+            <div class="left-trello">
+              <div class="diary-date">
+                <p class="diary-date-innerHTML">Error</p>
+              </div>
+              <div class="float-container">
+                <div class="diary-tag">
+                  <p class="diary-tag-innerHTML">Error</p>
+                </div>
+              </div>
+              <div class="float-container">
+                <div class="diary-mood">
+                  <p class="diary-mood-innerHTML">Error</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <section id="row-middle-trello-section"></section>
+        </div>
+      </template>
+      <!-- trello-container-middle-template -->
+      <template id="trello-container-middle-template">
+        <div
+          id="row-trello-container-middle"
+          class="trello-container-middle"
+          data-row=""
+          data-column="1"
+        >
+          <!-- Add row# to "row" in id using JS -->
+          <div class="middle-trello">
+            <div class="diary-date">
+              <p class="diary-date-innerHTML">Error</p>
+            </div>
+            <div class="float-container">
+              <div class="diary-tag">
+                <p class="diary-tag-innerHTML">Error</p>
+              </div>
+            </div>
+            <div class="float-container">
+              <div class="diary-mood">
+                <p class="diary-mood-innerHTML">Error</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section id="row-right-trello-section"></section>
+      </template>
+      <!-- trello-container-right-template -->
+      <template id="trello-container-right-template">
+        <div
+          id="row-trello-container-right"
+          class="trello-container-right"
+          data-row=""
+          data-column="2"
+        >
+          <div class="right-trello">
+            <div class="diary-date">
+              <p class="diary-date-innerHTML"></p>
+            </div>
+            <div class="float-container">
+              <div class="diary-tag">
+                <p class="diary-tag-innerHTML"></p>
+              </div>
+            </div>
+            <div class="float-container">
+              <div class="diary-mood">
+                <p class="diary-mood-innerHTML"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+    <!-- End of the trello base -->
+
+    <section id="edit-and-create-window"></section>
+
+    <!-- edit and create diary template -->
+    <template id="edit-and-create-item-template">
+      <div class="background">
+        <div class="background-top-row">
+          <textarea id="data-date" placeholder="YYYY.MM.DD" readonly></textarea>
+          <select
+            id="edit-and-create-diary-tag"
+            name="edit-and-create-diary-tag"
+            class="edit-and-create-diary-tag"
+            selected="selected"
+          >
+            <option value="學業">學業</option>
+            <option value="人際">人際</option>
+            <option value="社團">社團</option>
+          </select>
+
+          <select
+            id="edit-and-create-diary-mood"
+            name="edit-and-create-diary-mood"
+            class="edit-and-create-diary-mood"
+            selected="selected"
+          >
+            <option value="快樂">快樂</option>
+            <option value="生氣">生氣</option>
+            <option value="難過">難過</option>
+          </select>
+
+          <button class="view-close-sign">X</button>
+        </div>
+
+        <div class="background-middle-row">
+          <button class="save-diary-edit">Save</button>
+          <button class="cancel-diary-edit">Cancel</button>
+        </div>
+
+        <div class="background-bottom-row">
+          <textarea
+            class="edit-diary-content"
+            placeholder=" How's your day"
+          ></textarea>
+          <!-- <div class="diary-img"></div> -->
+        </div>
+      </div>
+    </template>
+
+    <!-- View template -->
+    <template id="view-template">
+      <div class="background">
+        <div class="background-top-row">
+          <div class="edit-and-create-diary-date">
+            <p id="view-data-date">
+              <!-- fill by using JS Date() method and document.innerHTML-->
+            </p>
+          </div>
+          <div
+            name="edit-and-create-diary-tag"
+            class="edit-and-create-diary-tag"
+          >
+            <p class="diary-tag-view"></p>
+          </div>
+
+          <div
+            name="edit-and-create-diary-mood"
+            class="edit-and-create-diary-mood"
+          >
+            <p class="diary-mood-view"></p>
+          </div>
+
+          <button class="view-close-sign">X</button>
+        </div>
+
+        <div class="background-middle-row">
+          <button class="edit-button">Edit</button>
+        </div>
+
+        <div class="background-bottom-row">
+          <textarea
+            class="view-diary-content"
+            placeholder="How's your day"
+            value=""
+            readonly
+          ></textarea>
+          <!-- <div class="diary-img"></div> -->
+        </div>
+      </div>
+    </template>
+  </body>
+</html>
